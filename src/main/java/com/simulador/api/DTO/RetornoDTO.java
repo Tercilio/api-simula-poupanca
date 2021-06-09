@@ -10,16 +10,20 @@ public class RetornoDTO implements Serializable {
 	
 	private Integer ano;
 	private Double salario;
+	private Double contX;
+	private Double contY;
 	private Double total;
 
 	public RetornoDTO() {
 		
 	}
 
-	public RetornoDTO(Usuario user, Double total, Integer ano) {
+	public RetornoDTO(Usuario user, Double total, Double contX, Double contY,  Integer ano) {
 		super();
 		this.ano = ano;
 		this.salario = user.getSalario();
+		this.contX = user.valorContX(user.getContX());
+		this.contY = user.valorContY(user.getContY());
 		this.total = total;
 	}
 
@@ -46,6 +50,23 @@ public class RetornoDTO implements Serializable {
 	public void setTotal(Double total) {
 		this.total = total;
 	}
+
+	public Double getContX() {
+		return contX;
+	}
+
+	public void setContX(Double contX) {
+		this.contX = contX;
+	}
+
+	public Double getContY() {
+		return contY;
+	}
+
+	public void setContY(Double contY) {
+		this.contY = contY;
+	}
+	
 	
 	
 }

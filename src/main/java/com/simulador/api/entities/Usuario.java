@@ -1,7 +1,6 @@
 package com.simulador.api.entities;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,39 +134,45 @@ public class Usuario implements Serializable {
 	}
 
 	public Double valorContY(Double percent) {
-		Double contribuicao = (percent / 100) * salario;
-		return contribuicao > 2500.00 ? 2500.00 : contribuicao;
+
+		Double contribuicaoFinal = 0.0;
+
+		if (salario > 2500.00) {
+
+			Double excedente = salario - 2500.00;
+			contribuicaoFinal = (percent / 100) * excedente;
+
+		} 
+		
+		return contribuicaoFinal;
 	}
+
+
 
 	public Double contMensal() {
 		Double total = valorContX(contX) + valorContY(contY);
 		return total;
 	}
-	
 
 	public List<RetornoDTO> valorTotalCont(Usuario user) {
 
-		DecimalFormat df = new DecimalFormat("#,###.00");
 		Locale ptBr = new Locale("pt", "BR");
 		Double montante = 0.0;
 		List<RetornoDTO> valores = new ArrayList<>();
 
 		for (int i = 1; i <= anos; i++) {
 			Double valorAno = 12 * contMensal();
-			
+
 			montante += valorAno;
-			df.format(montante);
-			RetornoDTO newRetorno = new RetornoDTO(user, montante, i);
+			RetornoDTO newRetorno = new RetornoDTO(user,  montante, user.valorContX(contX) , user.valorContY(contY), i);
 			salario += (salario * (reajusteAnual / 100));
 			valores.add((newRetorno));
-			
+
 			System.out.println(i + "° " + "Ano" + "= " + NumberFormat.getCurrencyInstance(ptBr).format(montante));
-		
+
 		}
-		
+
 		return valores;
 	}
-	
-	
 
 }
